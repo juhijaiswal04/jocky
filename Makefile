@@ -2,10 +2,10 @@ CC      = gcc
 CFLAGS  = -std=c99 -Wall -Wextra -O2 -Icompiler -Iruntime
 LDFLAGS =
 
-COMPILER_SRCS = compiler/arena.c compiler/lexer.c compiler/ast.c \
-                compiler/parser.c compiler/symtable.c compiler/type.c \
-                compiler/error.c compiler/sema.c compiler/codegen.c \
-                compiler/stealth.c compiler/main.c
+COMPILER_SRCS = src/arena.c src/lexer.c src/ast.c \
+                src/parser.c src/symtable.c src/type.c \
+                src/error.c src/sema.c src/codegen.c \
+                src/stealth.c src/main.c
 
 RUNTIME_SRCS  = runtime/jky_value.c runtime/jky_gc.c runtime/jky_host.c \
                 runtime/jky_process.c runtime/jky_network.c runtime/jky_fs.c \

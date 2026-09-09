@@ -1,0 +1,8 @@
+fn main() -> void {
+    log.info("Starting DFIR Authentication Log Collection...");
+    
+    // 24 represents the timeframe (Last 24 hours)
+    forensics.get_auth_logs(24);
+    
+    log.info("Collection complete.");
+}

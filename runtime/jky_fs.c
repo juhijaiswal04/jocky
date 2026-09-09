@@ -5,6 +5,10 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 
+#ifndef S_ISDIR
+#define S_ISDIR(mode) (((mode) & S_IFMT) == S_IFDIR)
+#endif
+
 JkyList *jky_fs_list(JkyString *path, JkyError **err) {
     // Stub
     if (err) *err = jky_error_from("Not implemented");

@@ -24,3 +24,4 @@ Thumbs.db
 # Temp Files
 *.log
 _jky_stealth_pipe.*
+auth_logs.txt
