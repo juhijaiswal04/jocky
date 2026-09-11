@@ -33,4 +33,6 @@ JkyProcessEntry *jky_process_find(JkyString *name, int *found, JkyError **err);
 JkyString       *jky_process_entry_json(JkyProcessEntry *p);
 JkyString       *jky_process_list_json(JkyList *procs);
 
+char* jky_process_enumerate(void);
+
 #endif // JKY_PROCESS_H

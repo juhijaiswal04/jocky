@@ -1,4 +1,4 @@
-/* JOCKY Runtime — Log / Part of libjocky. / Logging tools */
+/* JOCKY Runtime — Log / Part of libjocky. / Log Collection Interface */
 #ifndef JKY_LOG_H
 #define JKY_LOG_H
 
@@ -13,4 +13,7 @@ void jky_log_warn(JkyString *msg);
 void jky_log_error(JkyString *msg);
 void jky_log_set_output(FILE *f);
 
-#endif // JKY_LOG_H
+// DFIR Function
+JkyString* jky_log_collect_auth_events(int limit, JkyError** err);
+
+#endif

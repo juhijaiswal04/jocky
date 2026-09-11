@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "lexer.h"
 #include "parser.h"
 #include "sema.h"
@@ -38,6 +39,9 @@ int main(int argc, char **argv) {
     }
     
     const char *file_path = argv[2];
+    
+    clock_t compile_start = clock();
+    
     char *source = read_file(file_path);
     
     printf("[JOCKY] Compiling %s...\n", file_path);
@@ -83,6 +87,9 @@ int main(int argc, char **argv) {
     jky_arena_free(&arena);
     free(source);
     
+    clock_t compile_end = clock();
+    double compile_time = (double)(compile_end - compile_start) / CLOCKS_PER_SEC;
+    
     printf("\n[JOCKY] Executing %s...\n", out_exe);
     printf("----------------------------------------\n");
     fflush(stdout); // Flush buffers before child process takes over stdout
@@ -90,6 +97,11 @@ int main(int argc, char **argv) {
     // Run the generated binary
     system(out_exe);
     
+    clock_t run_end = clock();
+    double run_time = (double)(run_end - compile_end) / CLOCKS_PER_SEC;
+    
     printf("----------------------------------------\n");
+    printf("[JOCKY] Compile time: %.3f seconds\n", compile_time);
+    printf("[JOCKY] Run time:     %.3f seconds\n", run_time);
     return 0;
 }
