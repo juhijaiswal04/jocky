@@ -25,3 +25,6 @@ Thumbs.db
 *.log
 _jky_stealth_pipe.*
 auth_logs.txt
+process_logs.txt
+auth_logs.json
+process_logs.json

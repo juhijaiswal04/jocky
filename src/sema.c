@@ -126,10 +126,11 @@ static void visit_node_pass2(JkySema *sema, JkyAstNode *node) {
             JkySymbol *sym = resolve_symbol(sema, node->token.start, node->token.length);
             if (!sym) {
                 // v0.1 Hack: Allow standard library packages and methods to pass without full module resolution
-                if ((node->token.length == 3 && strncmp(node->token.start, "log", 3) == 0) ||
-                    (node->token.length == 4 && strncmp(node->token.start, "info", 4) == 0) ||
-                    (node->token.length == 9 && strncmp(node->token.start, "forensics", 9) == 0) ||
-                    (node->token.length == 13 && strncmp(node->token.start, "get_auth_logs", 13) == 0)) {
+                    if ((node->token.length == 3 && strncmp(node->token.start, "log", 3) == 0) ||
+                        (node->token.length == 4 && strncmp(node->token.start, "info", 4) == 0) ||
+                        (node->token.length == 9 && strncmp(node->token.start, "forensics", 9) == 0) ||
+                        (node->token.length == 13 && strncmp(node->token.start, "get_auth_logs", 13) == 0) ||
+                        (node->token.length == 13 && strncmp(node->token.start, "get_processes", 13) == 0)) {
                     // It's fine for v0.1 testing
                 } else {
                     fprintf(stderr, "Semantic Error: Undeclared identifier '%.*s'\n", node->token.length, node->token.start);

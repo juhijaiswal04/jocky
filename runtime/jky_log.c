@@ -1,3 +1,4 @@
+/* JOCKY Runtime — Log / Part of libjocky. / Log Collection Implementation */
 #include "jky_log.h"
 #include "jky_value.h"
 #include <stdio.h>
@@ -11,7 +12,7 @@
 
 JkyString* jky_log_collect_auth_events(int hours, JkyError** err) {
     char cmd[1024];
-    sprintf(cmd, "powershell -NoProfile -Command \"try { $events = Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4624,4625; StartTime=(Get-Date).AddHours(-%d)} -ErrorAction Stop; if ($events) { $events | Select-Object TimeCreated, Id, @{Name='User';Expression={$_.Properties[5].Value}}, @{Name='IP';Expression={$_.Properties[18].Value}} | Format-Table -AutoSize | Out-String } else { 'No events found in timeframe.' } } catch { 'Failed to query Security log. Run as Administrator.' }\"", hours);
+    sprintf(cmd, "powershell -NoProfile -Command \"try { $events = Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4624,4625; StartTime=(Get-Date).AddHours(-%d)} -ErrorAction Stop; if ($events) { $events | Select-Object TimeCreated, Id, @{Name='User';Expression={$_.Properties[5].Value}}, @{Name='IP';Expression={$_.Properties[18].Value}} | ConvertTo-Json -Compress } else { '[]' } } catch { '[{\\\"error\\\": \\\"Failed to query Security log. Run as Administrator.\\\"}]' }\"", hours);
     
     FILE* pipe = _popen(cmd, "r");
     if (!pipe) {
@@ -23,7 +24,19 @@ JkyString* jky_log_collect_auth_events(int hours, JkyError** err) {
     buffer[read_bytes] = '\0';
     _pclose(pipe);
     
-    return jky_string_from_cstr(buffer);
+    // Add newlines between JSON objects in the array
+    char out_buffer[32768] = {0};
+    int j = 0;
+    for (int i = 0; buffer[i] != '\0'; i++) {
+        out_buffer[j++] = buffer[i];
+        if (buffer[i] == '}' && buffer[i+1] == ',' && buffer[i+2] == '{') {
+            out_buffer[j++] = ',';
+            out_buffer[j++] = '\n';
+            i++; // skip the ',' in original buffer
+        }
+    }
+    
+    return jky_string_from_cstr(out_buffer);
 }
 
 #elif __linux__

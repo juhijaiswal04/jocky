@@ -1,3 +1,4 @@
+/* JOCKY Runtime — Log / Part of libjocky. / Log Collection Interface */
 #ifndef JKY_LOG_H
 #define JKY_LOG_H
 
